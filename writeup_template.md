@@ -45,17 +45,16 @@ I start by preparing "object points", which will be the (x, y, z) coordinates of
 
 I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
 
-<p align="center">
- <img src="camera_cal/calibration1.jpg">
-</p>
+Distorted Chessboard | Undistorted Chessboard
+---------------------|-----------------------
+![distorted](camera_cal/calibration1.jpg) | ![undistorted](output_images/undist_calibration1.png)
 
 Following image shows before and after applying distortion correction to a typical road image.
 
-<p align="center">
- <img src="output_images/undist_calibration1.png">
-</p>
+Distorted Chessboard | Undistorted Chessboard
+---------------------|-----------------------
+![distorted](test_images/straight_lines2.jpg) | ![undistorted](output_images/undist_straight_lines2.png)
 
-![alt text][image1]
 
 ###Pipeline (single images)
 
