@@ -95,7 +95,7 @@ Road Image | Warped Image
 
 Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
 
-![alt text][output_images/fitted_test2.png]
+![alt text](output_images/fitted_test2.png)
 
 ####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
@@ -105,13 +105,20 @@ I did this in lines # through # in my code in `my_other_file.py`
 
 I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
 
-![alt text][output_images/proj_straight_lines1.png]
+![alt text](output_images/proj_straight_lines1.png)
 
 ---
 
 ###Pipeline (video)
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+
+<p align="center">
+    <a href="https://www.youtube.com/watch?v=iOcDtqR1etU">
+        <img src="https://img.youtube.com/vi/iOcDtqR1etU/0.jpg" alt="video output">
+    </a>
+</p>
+
 
 Here's a [link to my video result](./project_video.mp4)
 
