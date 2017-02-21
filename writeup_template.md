@@ -39,7 +39,7 @@ Distorted Road Image | Undistorted Road Image
 
 ###Thresholded Binary Image
 
-In this step we tried to find lane lines using edge detection techniques. It is crucial to be able to identify lane lines pixels. I used a combination of color and gradient thresholds to generate a binary image. The code is contained in the function **'hsv_pipeline'** in main.py. Following illustrates the step of image thresholding:
+In this step we tried to filter the image using edge detection techniques to identify lane pixels. It is a crucial step for this project. I used a combination of color and gradient thresholds to generate a binary image. The code is contained in the function **'hsv_pipeline'** in main.py. Following illustrates the step of image thresholding:
 
 * Apply Sobel operation in X direction with threshold (20, 150)
 * Calculate gradient and apply threshold (0.7, 1.2)
@@ -71,27 +71,51 @@ Road Image | Warped Image
 
 ###Lane Lines Detection
 
-After performing perspective transform on the binary image, our next step is to identify the lane lines from the image. 
-
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+After performing perspective transform on the binary image, our next step is to identify the lane lines from the image. The detect the lane lines, we first take a histogram along all the columns in the lower half of the image. Since the image is binary, the two most prminent peaks in the histogram will be good indicators lines. We use that as a starting point for where to search for the lines. From that point, We can use a sliding window to find the line pixes up to the frames. Once we have the line pixels, we find the lane lines with a 2nd order polynomial. The implementation is encapsulated in the **'Line'** class **'histogram_line_detect'** routine. Following image show found lane lines in the image:
 
 ![alt text](output_images/fitted_test2.png)
 
-####5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
+Once we detects a lane lines in one frame in a video, we use it as a base for searching line pixels for following frame since the lane lines between two consecutive frame should be very close. The implementation of this kind of lane lines search is encapsulated in the **'Line'** class **'detect_lanes'** routine. To make sure that we detect the right lane lines, we check following:
 
-I did this in lines # through # in my code in `my_other_file.py`
+* The lines have similar curvature between consecutive frames.
+* The lines detected are roughly parallel. We check this by taking derivative at the middle of left and right lines and expects their values are closed.
 
-####6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+If the curvature of lines changes more than 10%, or the right is not parallel enough, we run the 'histogram_line_detect' again to detect the line.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+###Radius of Curvature Calculation
+
+Line curvature is calculated based on following equation:
+
+![equation](output_image/curv_eq.png)
+
+Since the image is in pixel, to convert it to world space, we assume the lane is about 30 meters long and 3.7 meters wide based on U.S. regulations that require a minimum lane width of 12 feet. The radius of curvature calculation is implemented in routine **'calculate_curvature'** of **'Line'** class.
+
+###Sample Output Image
+
+The **'process_image'** method in the **'Line'** class implementat the image process pipeline describe above. It takes an input image and produces an output image that contains hightlighted lane and lane lines' radius of curvature on the image. Here is an example of the result on a test image:
 
 ![alt text](output_images/proj_straight_lines1.png)
 
 ---
 
-###Pipeline (video)
+###Video Pipleline
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
+I use **moviepy** Python package to filter out the video image, then process the image and write it back to an new output video. Following show the code section for video processing:
+
+```python
+from moviepy.editor import VideoFileClip
+    
+lane = Line()
+    
+input_file = 'project_video.mp4'
+clip = VideoFileClip(input_file)
+    
+output_file = 'out_project_video.mp4'
+out_clip = clip.fl_image(lane.process_image)
+out_clip.write_videofile(output_file, audio=False)
+```
+ 
+Here is a link to my final video output:
 
 <p align="center">
     <a href="https://www.youtube.com/watch?v=iOcDtqR1etU">
@@ -104,7 +128,10 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 ###Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+My image process pipeline work reasonable well on the project video. However it does not work well on challenge videos. The image process pipeline does not handle more general road images well. I think there are several approaches I can try to make it more robust:
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+* Fine tune the thresholding algorithm, probabily utilizing color information to identify the lane lines, or using Hough transform to further identify correct lane pixels
+* Apply convolution on lane searching instead of using separate sliding window to detect left and right lines.
+* Explore machine learning approach for lane finding.  
+
 
