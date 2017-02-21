@@ -75,7 +75,7 @@ After performing perspective transform on the binary image, our next step is to 
 
 ![alt text](output_images/fitted_test2.png)
 
-Once we detects a lane lines in one frame in a video, we use it as a base for searching line pixels for the following frame since the lane lines between two consecutive frame should be very close. The implementation of this kind of lane lines search is encapsulated in the **`Line`** class **`detect_lanes`** routine. To make sure that we detect the right lane lines, we check following:
+Once we detect a lane lines in one frame in a video, we use it as a base for searching line pixels for the following frame since the lane lines between two consecutive frame should be very close. The implementation of this kind of lane lines search is encapsulated in the **`Line`** class **`detect_lanes`** routine. To make sure that we detect the right lane lines, we check following:
 
 * The lines have similar curvature between consecutive frames.
 * The lines detected are roughly parallel. We check this by taking derivative at the middle of left and right lines and expects their values are close.
@@ -92,7 +92,7 @@ Since the image is in pixel, to convert it to world space, we assume the lane is
 
 ###Sample Output Image
 
-The **`process_image`** method in the **`Line`** class implementat the image process pipeline described above. It takes an input image and produces an output image that contains hightlighted lane and lane lines' radius of curvature on the image. Here is an example of the result on a test image:
+The **`process_image`** method in the **`Line`** class implements the image process pipeline described above. It takes an input image and produces an output image that contains hightlighted lane and lane lines' radius of curvature on the image. Here is an example of the result on a test image:
 
 ![alt text](output_images/proj_straight_lines1.png)
 
