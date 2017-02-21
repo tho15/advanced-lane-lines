@@ -86,7 +86,7 @@ If the curvature of lines changes more than 10%, or the right is not parallel en
 
 Line curvature is calculated based on following equation:
 
-![equation](output_image/curv_eq.png)
+![equation](output_images/curv_eq.png)
 
 Since the image is in pixel, to convert it to world space, we assume the lane is about 30 meters long and 3.7 meters wide based on U.S. regulations that require a minimum lane width of 12 feet. The radius of curvature calculation is implemented in routine **'calculate_curvature'** of **'Line'** class.
 
