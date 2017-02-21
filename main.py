@@ -103,13 +103,13 @@ def dir_threshold(img, sobel_kernel = 3, thresh = (0, np.pi/2)):
 
 # image processing pipeline, threshold image by x gradient, gradient direction
 # and l and s-channels
-def hsv_pipeline(img, s_thresh=(170, 255), l_thresh=(30, 255), sx_thresh=(20, 150)):
+def hls_pipeline(img, s_thresh=(170, 255), l_thresh=(30, 255), sx_thresh=(20, 150)):
     
     img = np.copy(img)
-    # Convert to HSV color space and separate the V channel
-    hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HLS).astype(np.float)
-    l_channel = hsv[:,:,1]
-    s_channel = hsv[:,:,2]
+    # Convert to HLS color space and separate the V channel
+    hls = cv2.cvtColor(img, cv2.COLOR_RGB2HLS).astype(np.float)
+    l_channel = hls[:,:,1]
+    s_channel = hls[:,:,2]
     
     # Sobel x
     sobelx = cv2.Sobel(l_channel, cv2.CV_64F, 1, 0) # Take the derivative in x
@@ -420,7 +420,7 @@ class Line():
         # first undistort the image
         img = cv2.undistort(img, self.mtx, self.dist)
         # lane lines finding pipeline
-        lane_img = hsv_pipeline(img)
+        lane_img = hls_pipeline(img)
         
         # perspective transform
         dst = self.ps_xform.transform(lane_img)
