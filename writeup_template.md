@@ -4,7 +4,7 @@
 
 ###Overview
 
-The goal of this project is to identify lane lines from road mages taking from camera using tradictional computer vision techniques. The steps to identify lane lines from image are the following:
+The goal of this project is to identify lane lines from road images using tradictional computer vision techniques. The steps to identify lane lines from image are the following:
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
@@ -15,7 +15,7 @@ The goal of this project is to identify lane lines from road mages taking from c
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-We'll describe each step in detail next.
+We'll describe each step in detail next sections.
 
 ---
 
@@ -31,7 +31,7 @@ Distorted Chessboard | Undistorted Chessboard
 ---------------------|-----------------------
 ![distorted](camera_cal/calibration1.jpg) | ![undistorted](output_images/undist_calibration1.png)
 
-Following images show the a test image and the image after distortion correction:
+Following images show a test image and the image after distortion correction:
 
 Distorted Road Image | Undistorted Road Image
 ---------------------|-----------------------
@@ -39,14 +39,14 @@ Distorted Road Image | Undistorted Road Image
 
 ###Thresholded Binary Image
 
-In this step we tried to filter the image using edge detection techniques to identify lane pixels. It is a crucial step for this project. I used a combination of color and gradient thresholds to generate a binary image. The code is contained in the function **`hsv_pipeline`** in main.py. Following illustrates the step of image thresholding:
+In this step, we tried to filter the image using edge detection techniques to identify lane pixels. It is a crucial step for this project. I used a combination of color and gradient thresholds to generate a binary image. The code is contained in the function **`hsv_pipeline`** in **main.py**. Following illustrates the step of image thresholding:
 
 * Apply Sobel operation in X direction with threshold (20, 150)
 * Calculate gradient and apply threshold (0.7, 1.2)
 * Threshold S channel (170, 255) in HLS color space
 * Threahold L channel (30, 255) in HLS color space
 
-Here is an example of my ouput for this step:
+Here is an example of my ouput from this step:
 
 Road Image | Thresholded Binary Image
 -----------|-------------------------
@@ -54,7 +54,7 @@ Road Image | Thresholded Binary Image
 
 ###Perspective Transform
 
-The code for my perspective transform 'transform' is encapsulated in **`Perspective_xform`** class in the 'main.py' file. I chose the hardcode the source and destination points for transform. I manually picked those points from sample image and assume the image size to be 720x1280. Following lists the source and destination points:
+The code for my perspective transform **`transform`** is encapsulated in **`Perspective_xform`** class in the **main.py** file. I chose the hardcode the source and destination points for transform. I manually picked those points from sample image and assume the image size to be 720x1280. Following lists the source and destination points:
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
@@ -71,16 +71,16 @@ Road Image | Warped Image
 
 ###Lane Lines Detection
 
-After performing perspective transform on the binary image, our next step is to identify the lane lines from the image. The detect the lane lines, we first take a histogram along all the columns in the lower half of the image. Since the image is binary, the two most prminent peaks in the histogram will be good indicators lines. We use that as a starting point for where to search for the lines. From that point, We can use a sliding window to find the line pixes up to the frames. Once we have the line pixels, we find the lane lines with a 2nd order polynomial. The implementation is encapsulated in the **`Line`** class **`histogram_line_detect`** routine. Following image show found lane lines in the image:
+After performing perspective transform on the binary image, our next step is to identify the lane lines from the image. To detect the lane lines, we first take a histogram along all the columns in the lower half of the image. Since the image is binary, the two most prminent peaks in the histogram will be good indicators of lines. We use that as a starting point for where to search for the lines. From that point, We can use a sliding window to find the line pixes up to the frames. Once we have the line pixels, we find the lane lines with a 2nd order polynomial. The implementation is encapsulated in the **`Line`** class **`histogram_line_detect`** routine. Following image show found lane lines in a test image:
 
 ![alt text](output_images/fitted_test2.png)
 
-Once we detects a lane lines in one frame in a video, we use it as a base for searching line pixels for following frame since the lane lines between two consecutive frame should be very close. The implementation of this kind of lane lines search is encapsulated in the **`Line`** class **`detect_lanes`** routine. To make sure that we detect the right lane lines, we check following:
+Once we detects a lane lines in one frame in a video, we use it as a base for searching line pixels for the following frame since the lane lines between two consecutive frame should be very close. The implementation of this kind of lane lines search is encapsulated in the **`Line`** class **`detect_lanes`** routine. To make sure that we detect the right lane lines, we check following:
 
 * The lines have similar curvature between consecutive frames.
-* The lines detected are roughly parallel. We check this by taking derivative at the middle of left and right lines and expects their values are closed.
+* The lines detected are roughly parallel. We check this by taking derivative at the middle of left and right lines and expects their values are close.
 
-If the curvature of lines changes more than 10%, or the right is not parallel enough, we run the 'histogram_line_detect' again to detect the line.
+If the curvature of lines changes more than 10%, or the lines is not parallel enough, we run the **`histogram_line_detect`** again to detect the line.
 
 ###Radius of Curvature Calculation
 
@@ -92,7 +92,7 @@ Since the image is in pixel, to convert it to world space, we assume the lane is
 
 ###Sample Output Image
 
-The **`process_image`** method in the **`Line`** class implementat the image process pipeline describe above. It takes an input image and produces an output image that contains hightlighted lane and lane lines' radius of curvature on the image. Here is an example of the result on a test image:
+The **`process_image`** method in the **`Line`** class implementat the image process pipeline described above. It takes an input image and produces an output image that contains hightlighted lane and lane lines' radius of curvature on the image. Here is an example of the result on a test image:
 
 ![alt text](output_images/proj_straight_lines1.png)
 
@@ -100,7 +100,7 @@ The **`process_image`** method in the **`Line`** class implementat the image pro
 
 ###Video Pipleline
 
-I use **moviepy** Python package to filter out the video image, then process the image and write it back to an new output video. Following show the code section for video processing:
+I use **moviepy** Python package to filter out the video images, then process the images and write them back to an new output video. Following shows the code section for video processing:
 
 ```python
 from moviepy.editor import VideoFileClip
