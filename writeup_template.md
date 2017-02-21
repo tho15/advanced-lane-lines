@@ -128,7 +128,7 @@ Here is a link to my final video output:
 
 ###Discussion
 
-My image process pipeline work reasonable well on the project video. However it does not work well on challenge videos. The image process pipeline does not handle more general road images well. I think there are several approaches I can try to make it more robust:
+My image process pipeline works reasonable well on the project video. However it does not work well on the challenge videos. The image process pipeline does not handle more general road images well. I think there are several approaches I can try to make it more robust:
 
 * Fine tune the thresholding algorithm, probabily utilizing color information to identify the lane lines, or using Hough transform to further identify correct lane pixels
 * Apply convolution on lane searching instead of using separate sliding window to detect left and right lines.
