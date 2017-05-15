@@ -1,8 +1,8 @@
-##Advanced Lane Finding
+## Advanced Lane Finding
 
 ---
 
-###Overview
+### Overview
 
 The goal of this project is to identify lane lines from road images using traditional computer vision techniques. Following are the steps to identify lane lines from image:
 
@@ -19,7 +19,7 @@ We'll describe each step in detail next sections.
 
 ---
 
-###Camera Calibration
+### Camera Calibration
 
 The code for this step is contained in the function **`camera_cal`** in the **main.py** file. 
 
@@ -37,7 +37,7 @@ Distorted Road Image | Undistorted Road Image
 ---------------------|-----------------------
 ![distorted](test_images/straight_lines2.jpg) | ![undistorted](output_images/undist_straight_lines2.png)
 
-###Thresholded Binary Image
+### Thresholded Binary Image
 
 In this step, we tried to filter the image using edge detection techniques to identify lane pixels. It is a crucial step for this project. I used a combination of color and gradient thresholds to generate a binary image. The code is contained in the function **`hsv_pipeline`** in **main.py**. Following illustrates the step of image thresholding:
 
@@ -52,7 +52,7 @@ Road Image | Thresholded Binary Image
 -----------|-------------------------
 ![distorted](test_images/test3.jpg) | ![undistorted](output_images/binimag_test3.png)
 
-###Perspective Transform
+### Perspective Transform
 
 The code for my perspective transform **`transform`** is encapsulated in **`Perspective_xform`** class in the **main.py** file. I chose the hardcode the source and destination points for transform. I manually picked those points and test them with sample image. The image size is assumed to be 720x1280. Following lists the source and destination points:
 
@@ -69,7 +69,7 @@ Road Image | Warped Image
 -----------|--------------
 ![distorted](test_images/test2.jpg) | ![undistorted](output_images/pxform_test2.png)
 
-###Lane Lines Detection
+### Lane Lines Detection
 
 After performing perspective transform on the binary image, our next step is to identify the lane lines from the image. To detect the lane lines, we first take a histogram along all the columns in the lower half of the image. Since the image is binary, the two most prominent peaks in the histogram will be good indicators of lines. We use that as a starting point for where to search for the lines. From that point, We can use a sliding window to find the line pixels up to the top of the frames. Once we have the line pixels, we find the lane lines with a 2nd order polynomial. The implementation is encapsulated in the **`Line`** class **`histogram_line_detect`** routine. Following image show found lane lines in a test image:
 
@@ -82,7 +82,7 @@ Once we detect a lane lines in one frame in a video, we use it as a base for sea
 
 If the curvature of lines changes more than 10%, or the lines is not parallel enough, we run the **`histogram_line_detect`** again to detect the lines.
 
-###Radius of Curvature Calculation
+### Radius of Curvature Calculation
 
 Line curvature is calculated based on following equation:
 
@@ -98,7 +98,7 @@ The **`process_image`** method in the **`Line`** class implements the image proc
 
 ---
 
-###Video Pipleline
+### Video Pipleline
 
 I use **moviepy** Python package to filter out the video images, then process the images and write them back to an new output video. Following shows the code section for video processing:
 
@@ -126,7 +126,7 @@ Here is a link to my final video output:
 
 ---
 
-###Discussion
+### Discussion
 
 My image process pipeline works reasonable well on the project video. However it does not work well on the challenge videos. The image process pipeline does not handle more general road images well. I think there are several approaches I can try to make it more robust:
 
