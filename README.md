@@ -90,7 +90,7 @@ Line curvature is calculated based on following equation:
 
 Since the image is in pixel, to convert it to world space, we assume the lane is about 30 meters long and 3.7 meters wide based on U.S. regulations that require a minimum lane width of 12 feet. The radius of curvature calculation is implemented in the method **`calculate_curvature`** of **`Line`** class.
 
-###Sample Output Image
+### Sample Output Image
 
 The **`process_image`** method in the **`Line`** class implements the image process pipeline described above. It takes an input image and produces an output image that contains hightlighted lane and lane lines' radius of curvature on the image. Here is an example of the result on a test image:
 
